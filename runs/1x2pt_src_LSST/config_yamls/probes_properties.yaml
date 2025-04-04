@@ -1,0 +1,17 @@
+probes:
+  include_rsd: false
+  lsst:
+    sky_area: 18000.0
+    fsky: 0.43478091
+    # fsky: 0.09696273622190718 #overlap sky area
+    tracers:
+      src:
+        distribution: SRD_Y1
+        sigma_z: [1.0, 1.0, 1.0, 1.0, 1.0]
+        delta_z: [0.00, 0.00, 0.00, 0.00, 0.00]
+        sigma_e: [0.26, 0.26, 0.26, 0.26, 0.26]
+        ia_bias: 0.5
+        alphaz: 0.0
+        z_piv: 0.62
+        alphag: 1.0
+        ngal: [2.036, 1.964, 1.973, 1.987, 2.023]

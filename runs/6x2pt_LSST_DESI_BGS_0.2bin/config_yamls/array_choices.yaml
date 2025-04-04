@@ -1,0 +1,22 @@
+z_array: # Don't change the z_array informations
+  z_start: 0.0001
+  z_stop: 3.5
+  z_number: 10000
+ell_array:
+  type: log # Options: lin, log
+  ell_start: 20
+  ell_stop: 2000
+  ell_bins: 20
+scale_cuts:
+  # Three options for key are available: kmax, lmax
+  # If you want to use all range (i.e not apply scale cuts) just comment the key
+  lens:
+    kmax: 0.1
+  spec_bgs:
+    kmax: 0.1
+  # spec_lrg:
+  #   kmax: 0.1
+  #spec_elg:
+  #  kmax: 0.1
+  src:
+    lmax: 2000

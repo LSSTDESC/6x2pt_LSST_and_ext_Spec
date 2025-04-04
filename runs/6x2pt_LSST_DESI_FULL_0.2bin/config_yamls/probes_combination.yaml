@@ -1,0 +1,58 @@
+lens-lens:
+  combinations: [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]]
+spec_bgs-lens:
+  combinations: [[0, 0], [1, 0], [1, 1]]
+spec_lrg-lens:
+  combinations: [[0, 0], [0, 1], [1, 1], [1, 2], [2, 2], [2, 3], [3, 3], [3, 4]]
+spec_elg-lens:
+  combinations:
+    [[0, 1], [0, 2], [1, 2], [0, 3], [1, 3], [2, 3], [1, 4], [2, 4], [3, 4]]
+spec_bgs-spec_bgs:
+  combinations: [[0, 0], [1, 1]]
+spec_bgs-spec_lrg:
+  combinations: [[1, 0]]
+spec_lrg-spec_lrg:
+  combinations: [[0, 0], [1, 1], [2, 2], [3, 3]]
+spec_lrg-spec_elg:
+  combinations: [[1, 0], [2, 0], [2, 1], [3, 1], [3, 2]]
+spec_elg-spec_elg:
+  combinations: [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]]
+lens-src:
+  combinations: [[0, 2], [0, 3], [0, 4], [1, 3], [1, 4], [2, 4], [3, 4]]
+spec_bgs-src:
+  combinations: [[0, 1], [0, 2], [1, 2], [0, 3], [1, 3], [0, 4], [1, 4]]
+spec_elg-src:
+  combinations: [[0, 3], [0, 4], [1, 4], [2, 4]]
+spec_lrg-src:
+  combinations:
+    [
+      [0, 1],
+      [0, 2],
+      [1, 2],
+      [0, 3],
+      [1, 3],
+      [2, 3],
+      [0, 4],
+      [1, 4],
+      [2, 4],
+      [3, 4],
+    ]
+src-src:
+  combinations:
+    [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+      [0, 3],
+      [0, 4],
+      [1, 1],
+      [1, 2],
+      [1, 3],
+      [1, 4],
+      [2, 2],
+      [2, 3],
+      [2, 4],
+      [3, 3],
+      [3, 4],
+      [4, 4],
+    ]

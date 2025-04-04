@@ -1,0 +1,15 @@
+general:
+  sacc_file: "./sacc_files/run_0_3x2pt_LSST.sacc"
+  cosmology_file: "./config_yamls/cosmology.yaml"
+  probes_file: "./config_yamls/probes_properties.yaml"
+  probe_combinations_file: "./config_yamls/probes_combination.yaml"
+  array_choices_file: "./config_yamls/array_choices.yaml"
+  priors_file: "./config_yamls/prior_choices/LCDM_prior.yaml"
+
+  # Select the covariance builder to use (OneCovariance, FourrierGaussianFsky or Tjpcov)
+  cov_builder: "fourriergaussianfsky"
+
+  # Select the Fisher matrix builder to use (Augur, ...)
+  fisher_builder: "Augur"
+  fisher_output: "./fisher_output/LCDM" # Path to the output directory for the augur output.
+  fisher_step: 1e-2

@@ -1,0 +1,52 @@
+probes:
+  include_rsd: false
+  # Photometric survey:
+  lsst:
+    sky_area: 18000.0
+    #fsky: 0.43633231299858233
+    fsky: 0.09696273622190718 #overlap sky area
+    tracers:
+      lens:
+        distribution: SRD_Y1
+        sigma_z: [1.0, 1.0, 1.0, 1.0, 1.0]
+        delta_z: [0.00, 0.00, 0.00, 0.00, 0.00]
+        bias: [1.23885511, 1.3781005, 1.52472019, 1.67665752, 1.83243479]
+        ngal: [2.25, 3.098, 3.071, 2.595, 1.998]
+        #ngal: [] #FIXME: #This ngal is the neff for the lens sample with removing the spectroscopic overlap n_eff (See in the anaylsis notebook)
+      src:
+        distribution: SRD_Y1
+        sigma_z: [1.0, 1.0, 1.0, 1.0, 1.0]
+        delta_z: [0.00, 0.00, 0.00, 0.00, 0.00]
+        sigma_e: [0.26, 0.26, 0.26, 0.26, 0.26]
+        ia_bias: 0.5
+        alphaz: 0.0
+        z_piv: 0.62
+        alphag: 1.0
+        ngal: [2.036, 1.964, 1.973, 1.987, 2.023]
+  # Spectroscopy survey:
+  desi:
+    sky_area: 14000.0
+    # fsky: 0.3393695767766751
+    fsky: 0.09696273622190718 #overlap sky area
+    tracers:
+      spec_lrg:
+        distribution: ../../spec_dndz_config/desi_config/binned_distribution/desi_lrg_0.2_binned_distribution_EDR.txt"
+        sigma_z: [1.0, 1.0, 1.0, 1.0]
+        delta_z: [0.0, 0.0, 0.0, 0.0]
+        bias:
+          [
+            2.115284893595425,
+            2.3464994287384116,
+            2.587898296317133,
+            2.8366459524448286,
+          ]
+        ngal:
+          [
+            0.03166039207944149,
+            0.03695726511288676,
+            0.04204793442688488,
+            0.02257683682084172,
+          ]
+  overlap:
+    sky_area: 4000.0
+    fsky: 0.09696273622190718
