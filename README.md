@@ -42,18 +42,17 @@ This toolkit provides comprehensive Fisher matrix analysis for LSST 3x2pt probes
 
 ### Requirements
 
--
--
+- python > 3.11.11
+- firecrown > 1.8
+- pyccl > 3.0.2
+- onecovariance > 1.0.1
+- augur > 0.5.0
 
 ### Setup
 
 ```bash
 git clone https://github.com/LSSTDESC/6x2pt_LSST_and_ext_Spec.git
 cd 6x2pt_LSST_and_ext_Spec
-python -m venv venv
-source venv/bin/activate  # Linux/MacOS
-.\venv\Scripts\activate  # Windows
-pip install -r requirements.txt
 ```
 
 ## Usage
@@ -76,25 +75,12 @@ Available repositories include:
 
 The package uses YAML configuration files organized in three levels:
 
-1. Main Configuration (general.yaml):
-   - controls pipeline configurations
-   - set output directories and pipeline choices
-   - specifies which yamls used in the analysis
-2. Probes configurations (probes_properties.yaml)
-   - Defines survey properties
-   - Inclusion of rsd or not
-   - Defines nuisance parameters
-3. Probes combinations (probes_combination.yaml)
-   - Define which tracer combination are being set in the analysis
-4. array choices (array_choices.yaml)
-   - Define redshift array (if you choose to change, please rerun the spectroscopic notebook for consistency)
-   - Define ell bining arrays
-   - Define scale cuts for each tracer
-5. Cosmology (cosmology.yaml)
-   - Define cosmological parameters
-   - Defines other additional parameters to structure the cosmology object
-6. Prior choices (prior_choices/.)
-   - Define priors for the varying parameters in other yamls (for a list of parameters for example: lens{i}\_delta_z parameters two options can be done: [x, y] for all i parameters or [[x1, y1], ...] for individual prior for each i parameters
+1. general.yaml - Controls the pipeline run (output path, pipeline stages, YAML configuration choices)
+2. probes_properties.yaml - Sets survey and tracer properties (e.g inclusion RSD, Distribution, fsky, nuisance parameters, etc)
+3. probes_combination.yaml - Defines which probes combination are include in the data vector
+4. array_choices.yaml - Redshif and $\ell$ array, scale cuts
+5. cosmology.yaml - Cosmological parameters definitions
+6. prior_choices/\*.yaml - Prior values for parameters (for the nuisance parameters can be shared or tracer-specific)
 
 example configuration hierarchy:
 
@@ -116,16 +102,29 @@ key components of the repository:
 
 ```bash
 6x2pt_LSST_and_ext_Spec/
-├── config_builder.py        # Configuration management to run all pipeline
-├── covariance.py            # OneCovariance covariance calculation (copied to run OneCovariance inside the pipeline)
-├── fourrier_covariance_fsky.py  # Gaussian covariance calculation (tjpcov.covariance_gaussian_fsky code copy changing to accept new Firecrown infraestructure)
-├── likelihood_build.py      # Likelihood construction
-├── OneCoveriance_builder.py # OneCovariance interface script (create .ini file and reconstruct the OneCovariance covariance)
-├── runs/                   # All survey configurations
-│   ├── 1x2pt_*/           # Single probe analyses
-│   ├── 3x2pt_LSST/        # LSST-only analysis
-│   └── 6x2pt_*/           # Combined analyses
-├── sacc_generator.py       # SACC file generation
-├── spec_dndz_config/       # Spectroscopic survey n(z)'s
-└── utils.py                # Utility functions to run Sacc generator
+├── config_builder.py           # Central config manager
+├── covariance.py               # Wrapper for OneCovariance (copied from OneCovariance)
+├── fourrier_covariance_fsky.py # Gaussian covariance using Firecrown infraestructure (copied Tjpcov covariance builder)
+├── likelihood_build.py         # Likelihood builder
+├── OneCoveriance_builder.py    # Interface to OneCovariance (.ini creation, etc.)
+├── sacc_generator.py           # SACC file generator
+├── spec_dndz_config/           # Precomputed dN/dz files for spectroscopic surveys
+├── utils.py                    # Utility functions to Sacc file generator
+└── runs/                       # runs dictionary (1x2pt, 3x2pt, 6x2pt, etc.)
 ```
+
+## Examples
+
+Coming soon - will cinlude example runs and visual outputs
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+TODO!
+
+## Citation
+
+TODO!
