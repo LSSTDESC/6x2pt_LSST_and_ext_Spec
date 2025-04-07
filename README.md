@@ -6,6 +6,7 @@
 [![LSST DESC](https://img.shields.io/badge/LSST-DESC-blueviolet)](https://lsstdesc.org)
 
 ## Table of Contents
+
 1. [Introduction](#introduction)
 2. [Features](#features)
 3. [Installation](#installation)
@@ -18,18 +19,20 @@
 10. [Citation](#citation)
 
 ## Introduction
+
 This toolkit provides comprehensive Fisher matrix analysis for LSST 3x2pt probes combined with spectroscopic surveys (DESI, 4MOST). The package enables cosmological parameter forecasting and systematic error analysis for various survey combinations and binning strategies.
 
 ## Features
-- *Multiple survey combinations*:
+
+- _Multiple survey combinations_:
   - LSST 1x2pt (lensing or clustering only)
   - LSST 3x2pt (full combination)
   - 6x2pt (LSST + spectroscopic surveys)
-- *Flexible configuration*:
+- _Flexible configuration_:
   - Multiple binning strategies (0.05, 0.1, 0.2 redshift bins)
   - Various cosmological models (ΛCDM, w₀wₐ, mν)
   - With/without nuisance parameters
-- *Comprehensive outputs*:
+- _Comprehensive outputs_:
   - Fisher matrices
   - Covariance matrices
   - SACC files
@@ -38,10 +41,12 @@ This toolkit provides comprehensive Fisher matrix analysis for LSST 3x2pt probes
 ## Installation
 
 ### Requirements
-- 
-- 
+
+-
+-
 
 ### Setup
+
 ```bash
 git clone https://github.com/LSSTDESC/6x2pt_LSST_and_ext_Spec.git
 cd 6x2pt_LSST_and_ext_Spec
@@ -49,43 +54,47 @@ python -m venv venv
 source venv/bin/activate  # Linux/MacOS
 .\venv\Scripts\activate  # Windows
 pip install -r requirements.txt
+```
 
 ## Usage
+
 The main pipeline is executed via:
 
 ```bash
 python run_pipeline.py general.yaml
+```
 
 Available repositories include:
 
-* 1x2pt_lens_LSST
-* 1x2pt_src_LSST
-* 3x2pt_LSST
-* 6x2pt_LSST_DESI_[BGS/ELG/LRG]_0.2bin
-* 6x2pt_LSST_DESI_FULL_[0.2/0.1/0.05]bin
+- 1x2pt_lens_LSST
+- 1x2pt_src_LSST
+- 3x2pt_LSST
+- 6x2pt*LSST_DESI*[BGS/ELG/LRG]\_0.2bin
+- 6x2pt*LSST_DESI_FULL*[0.2/0.1/0.05]bin
 
 ## Configuration
+
 The package uses YAML configuration files organized in three levels:
 
 1. Main Configuration (general.yaml):
-	* controls pipeline configurations
-	* set output directories and pipeline choices
-	* specifies which yamls used in the analysis
+   - controls pipeline configurations
+   - set output directories and pipeline choices
+   - specifies which yamls used in the analysis
 2. Probes configurations (probes_properties.yaml)
-	* Defines survey properties
-	* Inclusion of rsd or not
-	* Defines nuisance parameters
+   - Defines survey properties
+   - Inclusion of rsd or not
+   - Defines nuisance parameters
 3. Probes combinations (probes_combination.yaml)
-	* Define which tracer combination are being set in the analysis
+   - Define which tracer combination are being set in the analysis
 4. array choices (array_choices.yaml)
-	* Define redshift array (if you choose to change, please rerun the spectroscopic notebook for consistency)
-	* Define ell bining arrays
-	* Define scale cuts for each tracer
+   - Define redshift array (if you choose to change, please rerun the spectroscopic notebook for consistency)
+   - Define ell bining arrays
+   - Define scale cuts for each tracer
 5. Cosmology (cosmology.yaml)
-	* Define cosmological parameters
-	* Defines other additional parameters to structure the cosmology object
+   - Define cosmological parameters
+   - Defines other additional parameters to structure the cosmology object
 6. Prior choices (prior_choices/.)
-	* Define priors for the varying parameters in other yamls (for a list of parameters for example: lens{i}_delta_z parameters two options can be done: [x, y] for all i parameters or [[x1, y1], ...] for individual prior for each i parameters 
+   - Define priors for the varying parameters in other yamls (for a list of parameters for example: lens{i}\_delta_z parameters two options can be done: [x, y] for all i parameters or [[x1, y1], ...] for individual prior for each i parameters
 
 example configuration hierarchy:
 
@@ -99,8 +108,10 @@ runs/
     │   └── prior_choices
     │	   └── prior_choice.yaml
     └── general.yaml
-    
+```
+
 ## File strucutre
+
 key components of the repository:
 
 ```bash
@@ -117,4 +128,4 @@ key components of the repository:
 ├── sacc_generator.py       # SACC file generation
 ├── spec_dndz_config/       # Spectroscopic survey n(z)'s
 └── utils.py                # Utility functions to run Sacc generator
-
+```
