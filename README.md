@@ -73,7 +73,7 @@ Available repositories include:
 
 ## Configuration
 
-The package uses YAML configuration files organized in three levels:
+The package uses YAML configuration files to control all aspects of the pipeline. These are organized by
 
 1. general.yaml - Controls the pipeline run (output path, pipeline stages, YAML configuration choices)
 2. probes_properties.yaml - Sets survey and tracer properties (e.g inclusion RSD, Distribution, fsky, nuisance parameters, etc)
