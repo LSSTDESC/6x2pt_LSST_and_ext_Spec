@@ -10,10 +10,7 @@
 4. [Usage](#usage)
 5. [Configuration](#configuration)
 6. [File Structure](#file-structure)
-7. [Examples](#examples)
-8. [Contributing](#contributing)
-9. [License](#license)
-10. [Citation](#citation)
+7. [Contributing](#contributing)
 
 ## Introduction
 
