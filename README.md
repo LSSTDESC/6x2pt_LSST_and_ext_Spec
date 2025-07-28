@@ -1,6 +1,5 @@
 # LSST 6x2pt Fisher Matrix Analysis Toolkit
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![LSST DESC](https://img.shields.io/badge/LSST-DESC-blueviolet)](https://lsstdesc.org)
 
 ## Table of Contents
@@ -75,7 +74,7 @@ Available runs include:
 
 ## Configuration
 
-The package uses YAML configuration files organized in three levels:
+The package uses YAML configuration files to control all aspects of the pipeline. These are organized by
 
 1. general.yaml - Controls the pipeline run (output path, pipeline choices, YAML configuration choices, etc)
 2. probes_properties.yaml - Sets survey and tracer properties (e.g inclusion RSD, Distribution path, fsky value, nuisance parameters, etc)
