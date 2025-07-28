@@ -18,6 +18,7 @@ from firecrown.metadata_types import Galaxies, InferredGalaxyZDist
 from firecrown.metadata_types import TwoPointXY, TwoPointHarmonic
 import firecrown.likelihood.weak_lensing as wl
 import firecrown.likelihood.number_counts as nc
+import firecrown.likelihood.two_point as tp
 from firecrown.likelihood.two_point import TwoPoint
 from firecrown.utils import base_model_from_yaml
 
@@ -143,10 +144,15 @@ class FirecrownFourierGaussianFsky():
                 dict_["sigma_e"][tr] = prbs_cfg["probes"]["lsst"]["tracers"]["src"]["sigma_e"][tracer_num]
             # Handle all galaxy tracers (including spec)
             if "spec" in tr:
-                survey = "desi"
+                try:
+                    survey = "desi"
+                    dict_["n_gal"][tr] = prbs_cfg["probes"][survey]["tracers"][base]["ngal"][tracer_num]
+                except:
+                    survey = "4most"
+                    dict_["n_gal"][tr] = prbs_cfg["probes"][survey]["tracers"][base]["ngal"][tracer_num]
             else:
                 survey = "lsst"
-            dict_["n_gal"][tr] = prbs_cfg["probes"][survey]["tracers"][base]["ngal"][tracer_num]
+                dict_["n_gal"][tr] = prbs_cfg["probes"][survey]["tracers"][base]["ngal"][tracer_num]
         return dict_
 
     def _get_config_value(self, config, key):
@@ -248,14 +254,20 @@ class FirecrownFourierGaussianFsky():
                                              str(self.factories["wl_factory"]))
             all_cells = TwoPoint.from_metadata(
                 metadata_seq=all_metadata_cells,
-                wl_factory=factories,
+                tp_factory=tp.TwoPointFactory(
+                    correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                    weak_lensing_factories=[factories],
+                )
             )
         elif self.factories["wl_factory"] is None:
             factories = base_model_from_yaml(nc.NumberCountsFactory,
                                              str(self.factories["nc_factory"]))
             all_cells = TwoPoint.from_metadata(
                 metadata_seq=all_metadata_cells,
-                nc_factory=factories,
+                tp_factory=tp.TwoPointFactory(
+                    correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                    number_counts_factories=[factories],
+                )
             )
         else:
             factories = [
@@ -266,8 +278,11 @@ class FirecrownFourierGaussianFsky():
             ]
             all_cells = TwoPoint.from_metadata(
                 metadata_seq=all_metadata_cells,
-                nc_factory=factories[0],
-                wl_factory=factories[1],
+                tp_factory=tp.TwoPointFactory(
+                    correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                    number_counts_factories=[factories[0]],
+                    weak_lensing_factories=[factories[1]],
+                )
             )
         # Define the sys and cosmo parameters and update
         all_cells.update(self.parameters)

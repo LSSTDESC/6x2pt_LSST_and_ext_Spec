@@ -77,6 +77,7 @@ class ConfigBuilder:
         self.array_config = None
         self.factories_config = None
         self.fisher_config = None
+        self.range_config = None
         self.prior_config = None
 
     def _process_systematic_entries(
@@ -357,11 +358,13 @@ class ConfigBuilder:
         """
         return {
             "nc_factory": {
+                "type_source": "default",
                 "per_bin_systematics": [],
                 "global_systematics": [],
                 "include_rsd": include_rsd,
             },
             "wl_factory": {
+                "type_source": "default",
                 "per_bin_systematics": [],
                 "global_systematics": [],
             },
@@ -501,14 +504,20 @@ class ConfigBuilder:
             param_aux = match.group(6)
             return tracer_aux, enum_aux, param_aux
 
+        # adding parameters range
         params_aux = {}
+        priors_aux = {}
         for param in self.firecrown_params:
             if param in self.cosmo_config["cosmology"]:
                 cosmo_param = self.cosmo_config["cosmology"].get(param)
+                cosmo_range = self.range_config["range"].get(param)
                 cosmo_prior = self.prior_config["priors"].get(param)
+                if cosmo_range is not None:
+                    fid_value = cosmo_param
+                    params_aux[param] = [cosmo_range[0], fid_value, cosmo_range[1]]
                 if cosmo_prior is not None:
                     fid_value = cosmo_param
-                    params_aux[param] = [cosmo_prior[0], fid_value, cosmo_prior[1]]
+                    priors_aux[param] = cosmo_prior
                 continue  # Skip to the next parameter
 
             # Handle special parameters: ia_bias, alphaz, z_piv and other systematics
@@ -518,11 +527,14 @@ class ConfigBuilder:
                 if tracer_dict is not None:
                     src_sys_fid_value = tracer_dict.get(param)
                     try:
+                        src_sys_range = self.range_config["range"]["lsst"]["src"][param]
+                        if src_sys_range is not None:
+                            params_aux[param] = [src_sys_range[0],
+                                                src_sys_fid_value,
+                                                src_sys_range[1]]
                         src_sys_prior = self.prior_config["priors"]["lsst"]["src"][param]
                         if src_sys_prior is not None:
-                            params_aux[param] = [src_sys_prior[0],
-                                                src_sys_fid_value,
-                                                src_sys_prior[1]]
+                                priors_aux[param] = src_sys_prior
                     except KeyError:
                         print(f"KeyError: {param} not found in prior_config")
                         continue
@@ -534,33 +546,22 @@ class ConfigBuilder:
                 if tracer_dict is not None:
                     tracer_sys_fid_value = tracer_dict[enum_aux]
                     try:
+                        tracer_sys_range = self.range_config["range"]["lsst"][tracer_aux][param_aux]
                         tracer_sys_prior = self.prior_config["priors"]["lsst"][tracer_aux][param_aux]
-                        if tracer_sys_prior is not None:
-                            if isinstance(tracer_sys_prior, list) and all(isinstance(item, list) for item in tracer_sys_prior):
-                                params_aux[param] = [tracer_sys_prior[enum_aux][0], tracer_sys_fid_value[enum_aux], tracer_sys_prior[enum_aux][1]]
+                        if tracer_sys_range is not None:
+                            if isinstance(tracer_sys_range, list) and all(isinstance(item, list) for item in tracer_sys_range):
+                                params_aux[param] = [tracer_sys_range[enum_aux][0], tracer_sys_fid_value[enum_aux], tracer_sys_range[enum_aux][1]]
                             else:
-                                params_aux[param] = [tracer_sys_prior[0], tracer_sys_fid_value, tracer_sys_prior[1]]
+                                params_aux[param] = [tracer_sys_range[0], tracer_sys_fid_value, tracer_sys_range[1]]
+
+                            if isinstance(tracer_sys_prior, list) and all(isinstance(item, list) for item in tracer_sys_prior):
+                                priors_aux[param] = tracer_sys_prior[enum_aux]
+                            else:
+                                priors_aux[param] = tracer_sys_prior
                     except KeyError:
                         print(f"KeyError: {param} not found in prior_config")
                         continue
-            elif param.startswith("spec"):
-                for survey in self.probes_config["probes"]:
-                    if survey == "overlap" or survey == "lsst":
-                        continue
-                    tracer_aux, enum_aux, param_aux = split_param_regex(param)
-                    tracer_dict = self.probes_config["probes"][survey]["tracers"][tracer_aux].get(param_aux)
-                    if tracer_dict is not None:
-                        tracer_sys_fid_value = tracer_dict[enum_aux]
-                        try:
-                            tracer_sys_prior = self.prior_config["priors"]["desi"][tracer_aux][param_aux]
-                            if tracer_sys_prior is not None:
-                                if isinstance(tracer_sys_prior, list) and all(isinstance(item, list) for item in tracer_sys_prior):
-                                    params_aux[param] = [tracer_sys_prior[enum_aux][0], tracer_sys_fid_value[enum_aux], tracer_sys_prior[enum_aux][1]]
-                                else:
-                                    params_aux[param] = [tracer_sys_prior[0], tracer_sys_fid_value, tracer_sys_prior[1]]
-                        except KeyError:
-                            print(f"KeyError: {param} not found in prior_config")
-                            continue
+        
         #FIXME: Not sure if this is correct
         bias_params_aux = {}
         # for bias_params in self.firecrown_params:
@@ -601,6 +602,7 @@ class ConfigBuilder:
                 "fid_output": self.config["general"]["fisher_output"] + "/fiducials.dat",
                 "bias_output": self.config["general"]["fisher_output"] + "/bias.dat",
                 "fisher_bias": {"bias_params": bias_params_aux},
+                "gaussian_priors": priors_aux,
             }
         }
         return augur_fisher_dict
@@ -650,6 +652,7 @@ class ConfigBuilder:
         self.factories_config = self._config_factories_auxiliar(self.probes_config)
 
         firecrown_params = cosmo_aux
+        self.range_config = load_yaml_file(self.config["general"]["ranges_file"])
         self.prior_config = load_yaml_file(self.config["general"]["priors_file"])
         self._process_systematic_factories(self.factories_config, probes_aux_config, firecrown_params)
         self._process_number_counts_bias(probes_aux_config, firecrown_params)

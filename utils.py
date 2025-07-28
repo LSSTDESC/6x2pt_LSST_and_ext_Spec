@@ -525,8 +525,8 @@ def build_sacc_file(
             nz=sample.dndz
         )
 
-    # Group two-point functions by galaxy type and sort by tracer names
-    # to ensure consistent ordering.
+    # # Group two-point functions by galaxy type and sort by tracer names
+    # # to ensure consistent ordering.
     two_point_functions_dict = defaultdict(list)
     for tw in two_point_functions:
         galaxy_type = tw.sacc_data_type
