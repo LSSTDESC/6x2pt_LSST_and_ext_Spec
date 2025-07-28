@@ -149,7 +149,6 @@ def sacc_generator(cfg: ConfigBuilder):
                 ).astype(np.int32))
 
     # Build weak lensing, number counts factories and TwoPoint Objects
-    print("Building TwoPoint objects...")
     if cfg.factories_config["nc_factory"] is None:
         factories = base_model_from_yaml(wl.WeakLensingFactory,
                                          str(cfg.factories_config["wl_factory"]
@@ -159,7 +158,10 @@ def sacc_generator(cfg: ConfigBuilder):
                                               twopoint_comb,
                                               tools.ccl_cosmo,
                                               ells),
-            wl_factory=factories,
+            tp_factory=tp.TwoPointFactory(
+                correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                weak_lensing_factory=[factories]
+            )
         )
     elif cfg.factories_config["wl_factory"] is None:
         factories = base_model_from_yaml(nc.NumberCountsFactory,
@@ -170,9 +172,17 @@ def sacc_generator(cfg: ConfigBuilder):
                                               twopoint_comb,
                                               tools.ccl_cosmo,
                                               ells),
-            nc_factory=factories,
+            tp_factory=tp.TwoPointFactory(
+                correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                number_counts_factories=[factories]
+            )
         )
     else:
+        print("Using both NumberCounts and WeakLensing factories")
+        print("    NumberCounts factory: ",
+              cfg.factories_config["nc_factory"])
+        print("    WeakLensing factory: ",
+              cfg.factories_config["wl_factory"])
         factories = [
             base_model_from_yaml(nc.NumberCountsFactory,
                                  str(cfg.factories_config["nc_factory"])),
@@ -184,8 +194,11 @@ def sacc_generator(cfg: ConfigBuilder):
                                               twopoint_comb,
                                               tools.ccl_cosmo,
                                               ells),
-            nc_factory=factories[0],
-            wl_factory=factories[1],
+            tp_factory=tp.TwoPointFactory(
+                correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                number_counts_factories=[factories[0]],
+                weak_lensing_factories=[factories[1]],
+            )
         )
     # Apply firecrown parameters to TwoPoint objects
     two_point_objects.update(params)
@@ -194,7 +207,7 @@ def sacc_generator(cfg: ConfigBuilder):
     print("Building Covariance Matrix...")
     # Build Sacc file without Covariance Matrix
     sacc = build_sacc_file(tools, dists, two_point_objects)
-    sacc.save_fits(cfg.config['general']['sacc_file'], overwrite=True)
+    #sacc.save_fits(cfg.config['general']['sacc_file'], overwrite=True)
 
     # Build Covariance Matrix
     cov_builder = cfg.config['general']['cov_builder'].lower()
@@ -229,7 +242,7 @@ def sacc_generator(cfg: ConfigBuilder):
         raise Warning("No Covariance Matrix added to Sacc file")
 
     # Save the Sacc file result
-    sacc.metadata["total_time"] = time.strftime("%Hh:%Mm:%Ss",
+    sacc.metadata["total_time"] = time.strftime("%Dd:%Hh:%Mm:%Ss",
                                                 time.gmtime(time.time() -
                                                             start_time))
     sacc.save_fits(cfg.config['general']['sacc_file'], overwrite=True)

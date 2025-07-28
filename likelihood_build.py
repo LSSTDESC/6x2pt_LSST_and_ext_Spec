@@ -6,12 +6,13 @@ import sacc
 # Firecrown imports
 from firecrown.parameters import ParamsMap
 from firecrown.utils import base_model_from_yaml
-from firecrown.likelihood.two_point import TwoPoint
 from firecrown.likelihood.gaussian import ConstGaussian
+from firecrown.likelihood.two_point import TwoPoint
+import firecrown.likelihood.two_point as tp
 from firecrown.likelihood.weak_lensing import WeakLensingFactory
 from firecrown.likelihood.number_counts import NumberCountsFactory
 from firecrown.metadata_functions import extract_all_harmonic_metadata_indices
-
+from utils import build_modeling_tools
 # Importing the functions from utils.py
 from config_builder import ConfigBuilder
 
@@ -52,8 +53,11 @@ def build_likelihood(cfg: ConfigBuilder) -> ConstGaussian:
                                              "wl_factory"]))
         two_point_list = TwoPoint.from_metadata_index(
             metadata_indices=all_meta,
-            wl_factory=factories,
-        )
+            tp_factory=tp.TwoPointFactory(
+                    correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                    weak_lensing_factories=[factories],
+                )
+            )
 
     elif cfg.factories_config["wl_factory"] is None:
         factories = base_model_from_yaml(NumberCountsFactory,
@@ -61,8 +65,11 @@ def build_likelihood(cfg: ConfigBuilder) -> ConstGaussian:
                                              "nc_factory"]))
         two_point_list = TwoPoint.from_metadata_index(
             metadata_indices=all_meta,
-            nc_factory=factories,
-        )
+            tp_factory=tp.TwoPointFactory(
+                    correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                    number_counts_factories=[factories],
+                )
+            )
     else:
         factories = [
             base_model_from_yaml(NumberCountsFactory,
@@ -72,12 +79,17 @@ def build_likelihood(cfg: ConfigBuilder) -> ConstGaussian:
         ]
         two_point_list = TwoPoint.from_metadata_index(
             metadata_indices=all_meta,
-            wl_factory=factories[1],
-            nc_factory=factories[0],
-        )
-
+            tp_factory=tp.TwoPointFactory(
+                    correlation_space= tp.TwoPointCorrelationSpace.HARMONIC,
+                    number_counts_factories=[factories[0]],
+                    weak_lensing_factories=[factories[1]],
+                )
+            )
     # Create the likelihood object and update the systematics
     lk = ConstGaussian(two_point_list)
     lk.read(sacc_data)
     lk.update(params)
+    tools = build_modeling_tools(cfg.cosmo_config)
+    tools.ccl_cosmo.compute_nonlin_power()
+    print(lk.compute_chisq(tools))
     return lk

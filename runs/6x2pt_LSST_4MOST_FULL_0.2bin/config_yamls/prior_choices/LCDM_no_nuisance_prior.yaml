@@ -1,0 +1,20 @@
+priors:
+  # adding the sigma value for the standard deviation of the Gaussian prior
+  Omega_c: 0.2
+  sigma8: 0.14
+  n_s: 0.08
+  Omega_b: 0.006
+  h: 0.063
+  # w0: 0.8
+  # wa: 2.0
+  # m_nu: 0.05
+  # lsst:
+  #   lens:
+  #     sigma_z: 0.1
+  #     delta_z: 0.1
+  #     bias: 0.9
+  #   src:
+  #     sigma_z: 0.1
+  #     delta_z: 0.1
+  #     ia_bias: 3.9
+  #     alphaz: 2.3

@@ -7,6 +7,7 @@ Description:
 
 # Third-party library imports
 import sys
+import numpy as np
 import os
 import argparse
 
@@ -64,22 +65,46 @@ if __name__ == "__main__":
     params = cfg.firecrown_params
     print("Parameters for the Fisher forecast:")
     cfg.show_augur_config_parameters()
-
+    runtype = cfg.fisher_config['fisher']['output'].split('/')[2]
+    sacctype = sacc_file.split('_')[2].split('.')[0]
+    assert runtype == sacctype, \
+        f"Mismatch between run type '{runtype}' and sacc file type '{sacctype}'. " \
+        "Please check the configuration files."
+    rangetype = f"{cfg.fisher_config['fisher']['output'].split('/')[3]}_prior"
+    assert rangetype == config['general']['priors_file'].split('/')[-1].split('.')[0], \
+        f"Mismatch between prior type '{rangetype}' and priors file '{config['general']['priors_file']}'. " \
+        "Please check the configuration files."
+    priortype = f"{cfg.fisher_config['fisher']['output'].split('/')[3]}"
+    assert priortype == config['general']['ranges_file'].split('/')[-1].split('.')[0], \
+        f"Mismatch between prior type '{priortype}' and ranges file '{config['general']['ranges_file']}'. " \
+        "Please check the configuration files."
+    print(f"Run type: {runtype} + {priortype}")
+        
     # Define modeling tools
     tools = build_modeling_tools(cfg.cosmo_config)
 
     # Initialize the Analyze Class from augur
     # FIXME: Implement other sources of run Fisher matrix
+    print(cfg.fisher_config)
     ao = Analyze(cfg.fisher_config,
                  likelihood=likelihood,
                  tools=tools,
                  req_params=params)
 
-    # Compute the Fisher matrix
-    print("Computing Fisher matrix...")
-    Fij = ao.get_fisher_matrix(method='numdifftools')
-    print('Fisher matrix:')
-    print(f"    {Fij}")
+    # check if the Fisher matrix is already computed
+    try:
+        Fij = np.loadtxt(f'{config["general"]["fisher_output"]}/fisher.dat')
+        print("Fisher matrix already computed. Loading from file...")
+        print('Fisher matrix:')
+        print(f"    {Fij}")
+        exit(0)
+    except FileNotFoundError:      
+        # Compute the Fisher matrix
+        print("Computing Fisher matrix...")
+        Fij = ao.get_fisher_matrix(method='numdifftools')
+        print('Fisher matrix:')
+        print(f"    {Fij}")
+        exit(0)
 
     #t =  np.linalg.inv(ij)
     # print(t)
