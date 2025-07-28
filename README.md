@@ -58,7 +58,7 @@ cd 6x2pt_LSST_and_ext_Spec
 The main pipeline is executed via:
 
 ```bash
-cd cd runs/run_name/
+cd runs/run_name/
 python run_pipeline.py general.yaml
 ```
 
@@ -74,8 +74,8 @@ Available runs include:
 The package uses YAML configuration files to control all aspects of the pipeline. These are organized by
 
 1. general.yaml - Controls the pipeline run (output path, pipeline choices, YAML configuration choices, etc)
-2. probes_properties.yaml - Sets survey and tracer properties (e.g inclusion RSD, Distribution path, fsky value, nuisance parameters, etc)
-3. probes_combination.yaml - Defines which probes combination are include in the data vector
+2. probes_properties.yaml - Sets survey and tracer properties (e.g, inclusion RSD, Distribution path, fsky value, nuisance parameters, etc)
+3. probes_combination.yaml - Defines which probe combinations are included in the data vector
 4. array_choices.yaml - Redshif and $\ell$ arrays, scale cuts
 5. cosmology.yaml - Cosmological parameters values
 6. prior_choices/\*.yaml - Prior values for parameters (for the nuisance parameters can be shared or tracer-specific)
@@ -98,18 +98,18 @@ runs/
     └── general.yaml
 ```
 
-## File strucutre
+## File structure
 
-key components of the repository:
+Key components of the repository:
 
 ```bash
 6x2pt_LSST_and_ext_Spec/
 ├── config_builder.py           # Central config manager
-├── fourrier_covariance_fsky.py # Gaussian covariance using Firecrown infraestructure (adapted from Tjpcov covariance_builder)
+├── fourrier_covariance_fsky.py # Gaussian covariance using Firecrown infrastructure (adapted from Tjpcov covariance_builder)
 ├── likelihood_build.py         # Likelihood builder
 ├── sacc_generator.py           # SACC file generator
 ├── spec_dndz_config/           # Precomputed dN/dz files for DESI/4MOST surveys
-├── utils.py                    # Utility functions to Sacc file generator
+├── utils.py                    # Utility functions for the Sacc file generator
 ├── runs/                       # runs dictionary (3x2pt, 6x2pt, etc.)
 └── one_covariance_setup/       # dictionary with OneCovariance files (not yet implemented!!!!)
 ```
