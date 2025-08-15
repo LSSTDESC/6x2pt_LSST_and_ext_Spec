@@ -22,16 +22,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
 # Importing the functions from likelihood_build.py
-from likelihood_build import build_likelihood
+from functions_setup.likelihood_build import build_likelihood
 
 # Importing the functions from utils.py
-from utils import build_modeling_tools
+from functions_setup.utils import build_modeling_tools
 
 # Importing the functions from config_builder.py
-from config_builder import load_yaml_file, ConfigBuilder
+from functions_setup.config_builder import load_yaml_file, ConfigBuilder
 
 # Importing the sacc_generator function
-from sacc_generator import sacc_generator
+from functions_setup.sacc_generator import sacc_generator
 
 if __name__ == "__main__":
 
