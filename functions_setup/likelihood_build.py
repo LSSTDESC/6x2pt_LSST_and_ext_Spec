@@ -12,9 +12,10 @@ import firecrown.likelihood.two_point as tp
 from firecrown.likelihood.weak_lensing import WeakLensingFactory
 from firecrown.likelihood.number_counts import NumberCountsFactory
 from firecrown.metadata_functions import extract_all_harmonic_metadata_indices
-from utils import build_modeling_tools
-# Importing the functions from utils.py
-from config_builder import ConfigBuilder
+
+# Importing the functions from fucntions_setup
+from functions_setup.utils import build_modeling_tools
+from functions_setup.config_builder import ConfigBuilder
 
 
 def build_likelihood(cfg: ConfigBuilder) -> ConstGaussian:

@@ -12,10 +12,10 @@ import firecrown.likelihood.two_point as tp
 from firecrown.parameters import ParamsMap
 
 # Importing the functions from config_builder.py
-from config_builder import ConfigBuilder
+from functions_setup.config_builder import ConfigBuilder
 
 # Importing the functions from utils.py
-from utils import (
+from functions_setup.utils import (
     build_modeling_tools,
     get_redshift_distribution,
     build_twopointxy_combinations,
@@ -25,8 +25,8 @@ from utils import (
 )
 
 # Importing covariance functions
-from OneCoveriance_builder import BuildCovWithOneCovariance
-from fourrier_covariance_fsky import FirecrownFourierGaussianFsky
+# from OneCoveriance_builder import BuildCovWithOneCovariance #FIXME: Not yet implemented
+from functions_setup.fourrier_covariance_fsky import FirecrownFourierGaussianFsky
 
 
 def sacc_generator(cfg: ConfigBuilder):
