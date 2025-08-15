@@ -104,13 +104,14 @@ Key components of the repository:
 
 ```bash
 6x2pt_LSST_and_ext_Spec/
-├── config_builder.py           # Central config manager
-├── fourrier_covariance_fsky.py # Gaussian covariance using Firecrown infrastructure (adapted from Tjpcov covariance_builder)
-├── likelihood_build.py         # Likelihood builder
-├── sacc_generator.py           # SACC file generator
-├── spec_dndz_config/           # Precomputed dN/dz files for DESI/4MOST surveys
-├── utils.py                    # Utility functions for the Sacc file generator
-├── runs/                       # runs dictionary (3x2pt, 6x2pt, etc.)
+├── functions_setup
+│   ├── config_builder.py           # Central config manager
+│   ├── fourrier_covariance_fsky.py # Gaussian covariance using Firecrown infrastructure (adapted from Tjpcov covariance_builder)
+│   ├── likelihood_build.py         # Likelihood builder
+│   ├── sacc_generator.py           # SACC file generator
+│   ├── spec_dndz_config/           # Precomputed dN/dz files for DESI/4MOST surveys
+│   ├── utils.py                    # Utility functions for the Sacc file generator
+│   ├── runs/                       # runs dictionary (3x2pt, 6x2pt, etc.)
 └── one_covariance_setup/       # dictionary with OneCovariance files (not yet implemented!!!!)
 ```
 
