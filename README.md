@@ -117,9 +117,12 @@ Key components of the repository:
 
 #### Note
 
-To use the notebooks in the `spec_dndz_config/` directory for generating the redshift distribution of the DESI DR1/EDR sample, make sure the `.txt` histogram files—produced by the [desitutorials](https://github.com/desihub/tutorials)—are placed in the `auxiliar_files/` directory.
+Some files—such as the SACC files and the redshift distributions for the DESI DR1/EDR sample—could not be included in the GitHub repository due to their large size.
+We recommend the following setup:
 
-Additionally, create a sacc_files/ directory to store the generated SACC files.
+- To run the notebooks in spec_dndz_config/ for generating the redshift distribution of the DESI DR1/EDR sample, place the .txt histogram files—produced by desitutorials—inside the auxiliar_files/ directory.
+
+- Create a sacc_files/ directory within the runs directory to ensure that the generated SACC files are stored in the correct location.
 
 ## Contributing
 
