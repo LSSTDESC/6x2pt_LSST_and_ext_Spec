@@ -1,5 +1,5 @@
 """Module to build the covariance matrix using the OneCovariance pipeline."""
-
+#FIXME: NOT YET IMPLEMENTED
 # Standard library imports
 import logging
 import os
