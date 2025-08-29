@@ -1,0 +1,16 @@
+general:
+  sacc_file: "./sacc_files/run_lsstsky_6x2pt_LSST_4MOST_FULL_0.2bin.sacc"
+  cosmology_file: "./config_yamls/cosmology.yaml"
+  probes_file: "./config_yamls/probes_properties_file/probes_properties_lsstsky.yaml"
+  probe_combinations_file: "./config_yamls/probes_combination.yaml"
+  array_choices_file: "./config_yamls/array_choices.yaml"
+  ranges_file: "./config_yamls/range_choices/LCDM_w0wa_no_nuisance.yaml"
+  priors_file: "./config_yamls/prior_choices/LCDM_w0wa_no_nuisance_prior.yaml"
+
+  # Select the covariance builder to use (OneCovariance, FourrierGaussianFsky or Tjpcov)
+  cov_builder: "fourriergaussianfsky"
+
+  # Select the Fisher matrix builder to use (Augur, ...)
+  fisher_builder: "Augur"
+  fisher_output: "./fisher_output/overlap/LCDM_w0wa_no_nuisance" # Path to the output directory for the augur output.
+  fisher_step: 1e-2
