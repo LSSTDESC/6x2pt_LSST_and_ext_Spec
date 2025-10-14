@@ -25,44 +25,7 @@ from firecrown.utils import base_model_from_yaml
 
 # pylint: disable=too-many-locals
 # The following functions is copied from TJPCOV
-def bin_cov(r, cov, r_bins):
-    """Apply the binning operator.
-
-    (Copied from TJPCOV)
-    This function works on both one dimensional vectors and two dimensional
-    covariance covrices.
-
-    Args:
-        r: theta or ell values at which the un-binned vector is computed.
-        cov: Unbinned covariance. It also works for a vector of C_ell or xi
-        r_bins: theta or ell bins to which the values should be binned.
-
-    Returns:
-        array_like: Binned covariance or vector of C_ell or xi
-    """
-    bin_center = 0.5 * (r_bins[1:] + r_bins[:-1])
-    n_bins = len(bin_center)
-    cov_int = np.zeros((n_bins, n_bins), dtype="float64")
-    bin_idx = np.digitize(r, r_bins) - 1
-
-    # this takes care of problems around bin edges
-    r2 = np.sort(np.unique(np.append(r, r_bins)))
-    dr = np.gradient(r2)
-    r2_idx = [i for i in np.arange(len(r2)) if r2[i] in r]
-    dr = dr[r2_idx]
-    r_dr = r * dr
-    cov_r_dr = cov * np.outer(r_dr, r_dr)
-
-    for i in np.arange(min(bin_idx), n_bins):
-        xi = bin_idx == i
-        for j in np.arange(min(bin_idx), n_bins):
-            xj = bin_idx == j
-            norm_ij = np.sum(r_dr[xi]) * np.sum(r_dr[xj])
-            if norm_ij == 0:
-                continue
-            cov_int[i][j] = np.sum(cov_r_dr[xi, :][:, xj]) / norm_ij
-    return bin_center, cov_int
-
+from tjpcov.wigner_transform import bin_cov
 
 class FirecrownFourierGaussianFsky():
     """Class to adapt tjpcov Gaussian CellxCell covariance using Knox formula.
@@ -380,7 +343,7 @@ class FirecrownFourierGaussianFsky():
             if tracer_comb1[1] == tracer_comb2[0]
             else 0
         )
-
+        
         signal = {}
         signal[13] = (c_ell[13] + noise[13])
         signal[13] /= np.sqrt(

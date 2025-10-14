@@ -59,7 +59,7 @@ The main pipeline is executed via:
 
 ```bash
 cd runs/run_name/
-python run_pipeline.py general.yaml
+python run_pipeline.py general_files/general.yaml
 ```
 
 Available runs include:
@@ -90,12 +90,14 @@ runs/
     │   ├── array_choices.yaml
     │   ├── cosmology.yaml
     │   ├── probes_combination.yaml
-    │   ├── probes_properties.yaml
-    │   ├── range_choices
+    │   ├── probes_properties_file 
+    │   │└── probes_properties.yaml
+    │   ├── range_choices/
     │   │└── range_choice.yaml
-    │   └── prior_choices
+    │   └── prior_choices/
     │	   └── prior_choice.yaml
-    └── general.yaml
+    ├── general_files/
+    │ └──general.yaml
 ```
 
 ## File structure

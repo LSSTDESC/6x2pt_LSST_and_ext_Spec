@@ -28,14 +28,11 @@ probes:
   # Spectroscopy survey:
   desi:
     sky_area: 14000.0
-    # fsky: 0.3393695767766751 # This is the fsky of the full DESI survey
-    fsky: 0.09696273622190718 # This is the fsky of the overlap region
+    fsky: 0.43633231299858233 # full LSST sky area
+    # fsky: 0.09696273622190718 #overlap sky area
     # fsky: 0.121203420423 # extension for 5k deg^2 for overlap region
-    # fsky: 0.145444104507 # extension for 6k deg^2 for Desi extension
     # fsky: 0.18180513063387072 #overlap for 7.5K deg^2 for overlap region (4MOST)
-    # fsky: 0.193925472671 # extension for 8k deg^2 for Desi extension
     # fsky: 0.242406840834 # extension for 10k deg^2 for Desi extension
-    # fsky: 0.43633231299858233 # full LSST sky area
     tracers:
       spec_bgs:
         distribution: "../../spec_dndz_config/desi_config/binned_distribution/desi_bgs_0.2_binned_distribution_DR1.txt"
@@ -83,10 +80,8 @@ probes:
           ]
   overlap:
     sky_area: 4000.0
-    fsky: 0.09696273622190718
+    fsky: 0.43633231299858233 # full LSST sky area
+    # fsky: 0.09696273622190718 #overlap sky area
     # fsky: 0.121203420423 # extension for 5k deg^2 for overlap region
-    # fsky: 0.145444104507 # extension for 6k deg^2 for Desi extension
     # fsky: 0.18180513063387072 #overlap for 7.5K deg^2 for overlap region (4MOST)
-    # fsky: 0.193925472671 # extension for 8k deg^2 for Desi extension
     # fsky: 0.242406840834 # extension for 10k deg^2 for Desi extension
-    # fsky: 0.43633231299858233 # full LSST sky area
